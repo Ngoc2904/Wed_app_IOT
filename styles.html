@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Station Monitoring </title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="container">
+        <h1>Power Station Monitoring</h1>
+        <div id="charts">
+            <div class="chart-box">
+                <h2>Temperature</h2>
+                <canvas id="temperature-chart-canvas"></canvas>
+            </div>
+            <div class="chart-box">
+                <h2>Humidity</h2>
+                <canvas id="humidity-chart-canvas"></canvas>
+            </div>
+            <div class="chart-box">
+                <h2>Voltage</h2>
+                <canvas id="voltage-chart-canvas"></canvas>
+            </div>
+        </div>
+        
+        <div id="fan">
+            <div class="ceiling-container">
+                <div class="ceiling-fan horizontal left"></div>
+                <div class="ceiling-fan horizontal right"></div>  
+                <div class="ceiling-fan vertical rotated top"></div>
+                <div class="ceiling-fan vertical rotated bottom"></div>
+               </div>
+            <div class="slidecontainer" >
+                <input type="range" min="1" max="100" value="50" id="myRange">
+                <p>Speed: <span id="demo"></span></p>
+              </div>
+              <span>
+                <button id="fan-toggle">Toggle</button>
+                <button id="fan-auto">Auto mode</button>
+              </span>
+            <div class="fan-status">
+                <i class="fas fa-fan fa-spin" id="fan-icon"></i>
+                <div id="fan-state">
+                    <p>Fan status: Off</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+    <!-- Font Awesome icons-->
+    <script src="https://kit.fontawesome.com/yourcode.js"></script>
+</body>
+</html>
