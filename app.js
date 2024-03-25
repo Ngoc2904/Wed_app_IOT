@@ -124,8 +124,14 @@ const temperatureChart = new Chart('temperature-chart-canvas', {
       ceilingContainer.style.animation = 'spin 6ms linear infinite';
   });
   const fanState = document.getElementById('fan-state');
+  
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value;
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
 
   
-  var slider = document.getElementById("myRange");
-  var output = document.getElementById("demo");
-  output.innerHTML = slider.value;
+
+  
