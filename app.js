@@ -75,7 +75,41 @@ const temperatureChart = new Chart('temperature-chart-canvas', {
       },
     },
   });
-  
+
+  //MQTT_INIT
+  const client = mqtt.connect('ws://broker.emqx.io:8083/mqtt');
+
+client.on('connect', () => {
+  console.log('Connected to MQTT broker!');
+  client.subscribe('topic/iot1.1', (err) => {
+    if (err) {
+      console.error('Error subscribing to topic:', err);
+    } else {
+      console.log('Subscribed to test/topic');
+    }
+  });
+});
+
+client.publish('topic/iot1.1', 'Hello, MQTT!', (err) => {
+  if (err) {
+    console.error('Error publishing message:', err);
+  } else {
+    console.log('Published message to topic/iot1.1');
+  }
+});
+
+client.on('message', (topic, message) => {
+  console.log('Received message:', message.toString(), 'on topic:', topic);
+  var data = JSON.stringify(message);
+  var data = JSON.parse(data);
+ var temperature = data.Temperature;
+ var humidity = data.Humidity;
+ var voltage = data.Voltage;
+ console.log("Temperature:", temperature);
+ console.log("Humidity:", humidity);
+ console.log("Voltage:", voltage);
+});
+//PROCESS
   function addData(chart, label, data) {
     chart.data.labels.push(label);
     chart.data.datasets.forEach((dataset) => {
@@ -94,6 +128,7 @@ const temperatureChart = new Chart('temperature-chart-canvas', {
   
   // Replace the following code with real-time data from the sensors
   setInterval(() => {
+    
     addData(temperatureChart, new Date().toTimeString().split(' ')[0], Math.random() * 100);
     addData(humidityChart, new Date().toTimeString().split(' ')[0], Math.random() * 100);
     addData(voltageChart, new Date().toTimeString().split(' ')[0], Math.random() * 10);
@@ -131,7 +166,3 @@ output.innerHTML = slider.value;
 slider.oninput = function() {
   output.innerHTML = this.value;
 }
-
-  
-
-  
