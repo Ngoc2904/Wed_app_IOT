@@ -107,7 +107,7 @@ client.on('message', (topic, message) => {
   fan_on=data.fan_on;
   fan_off=data.fan_off;
   mode_auto=data.mode;
-  ota=data.OTA;
+ota=data.OTA;
  console.log("Temperature:", temperature);
  console.log("Humidity:", humidity);
  console.log("Voltage:", voltage);
@@ -115,9 +115,22 @@ client.on('message', (topic, message) => {
  console.log("fan_off:", fan_off);
  console.log("mode_auto:", mode_auto);
  console.log("ota:", ota);
-
 });
 //PROCESS
+  function notification (){
+    if(temperature >80){
+      window.alert("Nhiệt độ vượt quá giới hạn");
+    
+    }
+    if(humidity >95){
+      window.alert("Độ ẩm cao");
+    }
+    if(voltage=0){
+      window.alert("Ngắn mạch");
+
+    }
+
+  }
   function addData(chart, label, data) {
     chart.data.labels.push(label);
     chart.data.datasets.forEach((dataset) => {
@@ -146,13 +159,13 @@ client.on('message', (topic, message) => {
     const fanState = document.getElementById('fan-state');
     fanState.classList.toggle('on');
     fanState.classList.toggle('off');
-    
+   
     if (fanState.classList.contains('on')) {
-      client.publish('topic/iot1.1', "fanon", (err) => {
+      client.publish('topic/data', "fanon",(err) => {
         if (err) {
           console.error('Error publishing message:', err);
         } else {
-          console.log('Published message to topic/iot1.1');
+          console.log('Published message to topic/data');
         }
       });
       if(fan_on=true){
@@ -162,28 +175,51 @@ client.on('message', (topic, message) => {
       }
    
     } else {
-      client.publish('topic/iot1.1', "fanoff", (err) => {
+      client.publish('topic/data', "fanoff", (err) => {
         if (err) {
           console.error('Error publishing message:', err);
         } else {
-          console.log('Published message to topic/iot1.1');
+          console.log('Published message to topic/data');
         }
       });
-      if(fan_off=true){
+    if(fan_off=true){
       fanState.innerHTML = '<p>Fan status: Off</p>';
       const ceilingContainer = document.querySelector('.ceiling-container');
-      ceilingContainer.style.animation = '0s';
+      ceilingContainer.style.animation = 'spin 0ms linear infinite'; 
+     
+      function countTime() {
+      seconds++; 
+       console.log(seconds + " giây đã trôi qua.");
+      }
+      var timer = setInterval(countTime, 1000);
+      setTimeout(function() {
+        clearInterval(timer); 
+         console.log("Đã đủ 60 giây. FAN ON ");
+        client.publish('topic/data', "fanon", (err) => {
+          if (err) {
+            console.error('Error publishing message:', err);
+          } else {
+            console.log('Published message to topic/data');
+          }
+        });
+        if(fan_on=true){
+          fanState.innerHTML = '<p>Fan status: On</p>';
+          const ceilingContainer = document.querySelector('.ceiling-container');
+          ceilingContainer.style.animation = 'spin 6ms linear infinite';
+          }
+    }, 10000);
     }
+
   }
   });
   
   document.getElementById('fan-auto').addEventListener('click', () => {
     const fanState = document.getElementById('fan-state');
-    client.publish('topic/iot1.1', "mode_on", (err) => {
+    client.publish('topic/data', "mode_on", (err) => {
       if (err) {
         console.error('Error publishing message:', err);
       } else {
-        console.log('Published message to topic/iot1.1');
+        console.log('Published message to topic/data');
       }
     });
     if(mode_auto=true){
@@ -193,14 +229,13 @@ client.on('message', (topic, message) => {
       ceilingContainer.style.animation = 'spin 6ms linear infinite';
     }
   }); 
-
   document.getElementById('OTA').addEventListener('click', () => {
     const fanState = document.getElementById('OTA');
-    client.publish('topic/iot1.1', "0ta", (err) => {
+    client.publish('topic/data', "0ta", (err) => {
       if (err) {
         console.error('Error publishing message:', err);
       } else {
-        console.log('Published message to topic/iot1.1');
+        console.log('Published message totopic/data');
       }
     });
     if(ota=true){
@@ -214,11 +249,11 @@ output.innerHTML = slider.value;
 slider.oninput = function() {
   output.innerHTML = this.value;
   var data=slider.value;
-  client.publish('topic/iot1.1',data.toString(), (err) => {
+  client.publish('topic/data',data.toString(), (err) => {
     if (err) {
       console.error('Error publishing message:', err);
     } else {
-      console.log('Published message to topic/iot1.1');
+      console.log('Published message to topic/data');
     }
   });
 }
