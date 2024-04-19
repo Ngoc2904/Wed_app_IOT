@@ -171,10 +171,17 @@ ota=data.OTA;
       if(fan_on=true){
       fanState.innerHTML = '<p>Fan status: On</p>';
       const ceilingContainer = document.querySelector('.ceiling-container');
-      ceilingContainer.style.animation = 'spin 6ms linear infinite';
+      ceilingContainer.style.animationDuration= 0.5+"s";
       }
    
     } else {
+      client.publish('topic/data', "fanoff", (err) => {
+        if (err) {
+          console.error('Error publishing message:', err);
+        } else {
+          console.log('Published message to topic/data');
+        }
+      });
       client.publish('topic/data', "fanoff", (err) => {
         if (err) {
           console.error('Error publishing message:', err);
@@ -194,16 +201,24 @@ ota=data.OTA;
       var timer = setInterval(countTime, 1000);
       setTimeout(function() {
         clearInterval(timer); 
-         console.log("Đã đủ 60 giây. FAN ON ");
-        client.publish('topic/data', "fanon", (err) => {
+         console.log("Đã đủ 60 giây. FAN Auto ");
+         client.publish('topic/data', "mode_on", (err) => {
           if (err) {
             console.error('Error publishing message:', err);
           } else {
             console.log('Published message to topic/data');
           }
         });
+        console.log("Đã đủ 60 giây. FAN Auto ");
+        client.publish('topic/data', "mode_on", (err) => {
+         if (err) {
+           console.error('Error publishing message:', err);
+         } else {
+           console.log('Published message to topic/data');
+         }
+       });
         if(fan_on=true){
-          fanState.innerHTML = '<p>Fan status: On</p>';
+          fanState.innerHTML = '<p>Fan status: Auto </p>';
           const ceilingContainer = document.querySelector('.ceiling-container');
           ceilingContainer.style.animation = 'spin 6ms linear infinite';
           }
@@ -223,10 +238,10 @@ ota=data.OTA;
       }
     });
     if(mode_auto=true){
-    fanState.innerHTML = '<p>Fan status: Auto mode</p>';
+    fanState.innerHTML = '<p>Fan status: Auto </p>';
     fanState.classList.add('auto');
     const ceilingContainer = document.querySelector('.ceiling-container');
-      ceilingContainer.style.animation = 'spin 6ms linear infinite';
+      ceilingContainer.style.animation = 'spin 8ms linear infinite';
     }
   }); 
   document.getElementById('OTA').addEventListener('click', () => {
@@ -249,6 +264,9 @@ output.innerHTML = slider.value;
 slider.oninput = function() {
   output.innerHTML = this.value;
   var data=slider.value;
+  var data_fan=(101-data)/60;
+  const ceilingContainer = document.querySelector('.ceiling-container');
+  ceilingContainer.style.animationDuration= data_fan+"s";
   client.publish('topic/data',data.toString(), (err) => {
     if (err) {
       console.error('Error publishing message:', err);
