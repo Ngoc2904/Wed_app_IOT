@@ -5,6 +5,9 @@ body {
     justify-content: center;
     align-items: center;
   }
+  #p{
+     
+  }
 
   #container {
     display: flex;
@@ -21,7 +24,24 @@ body {
     justify-content: space-between;
     margin-bottom: 40px;
   }
-  
+  #temperature{
+    color: rgb(240, 16, 16);
+  }
+  #humidity{
+    color: rgb(14, 179, 230);
+  }
+  #voltage{
+    color: #0fce4f;
+  }
+  #t{
+    color: rgb(240, 16, 16);
+  }
+  #h{
+    color: rgb(14, 179, 230);
+  }
+  #v{
+    color: #0fce4f;
+  }
   #fan {
     display: flex;
     flex-direction: column;

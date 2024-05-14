@@ -115,22 +115,11 @@ ota=data.OTA;
  console.log("fan_off:", fan_off);
  console.log("mode_auto:", mode_auto);
  console.log("ota:", ota);
+ document.getElementById('temperature').innerText = temperature + "°C";
+ document.getElementById('humidity').innerText = humidity + "%";
+ document.getElementById('voltage').innerText = voltage + "V";
 });
 //PROCESS
-  function notification (){
-    if(temperature >80){
-      window.alert("Nhiệt độ vượt quá giới hạn");
-    
-    }
-    if(humidity >95){
-      window.alert("Độ ẩm cao");
-    }
-    if(voltage=0){
-      window.alert("Ngắn mạch");
-
-    }
-
-  }
   function addData(chart, label, data) {
     chart.data.labels.push(label);
     chart.data.datasets.forEach((dataset) => {
